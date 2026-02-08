@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Revolução da Inteligência Artificial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ffff;
+            --secondary: #ff00ff;
+            --accent: #ffff00;
+            --dark: #0a0a1a;
+            --dark-alt: #151530;
+            --text: #e0e0ff;
+            --text-dim: #9090b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .gradient-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            background: radial-gradient(circle, var(--primary), transparent);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            background: radial-gradient(circle, var(--secondary), transparent);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: -7s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(100px, -100px) scale(1.2); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            min-height: 100vh;
+            padding: 8rem 5%;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 0, 255, 0.7)); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(21, 21, 48, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 255, 255, 0.2);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            text-align: right;
+            padding-right: 50%;
+            padding-left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            text-align: left;
+            padding-left: 50%;
+            padding-right: 0;
+        }
+
+        .timeline-content {
+            background: rgba(21, 21, 48, 0.7);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            display: inline-block;
+            margin: 0 2rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 4px solid var(--dark);
+            box-shadow: 0 0 20px var(--primary);
+            top: 2rem;
+        }
+
+        .timeline-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-dim);
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(21, 21, 48, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 3rem 5%;
+            background: rgba(10, 10, 26, 0.8);
+            border-top: 1px solid rgba(0, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        footer p {
+            color: var(--text-dim);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                flex-direction: column;
+                background: rgba(10, 10, 26, 0.95);
+                width: 100%;
+                padding: 2rem;
+                transition: left 0.3s;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                text-align: left;
+                padding-left: 60px;
+                padding-right: 0;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            section {
+                padding: 6rem 5%;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background elements -->
+    <div class="bg-grid"></div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">REV IA</div>
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#criatividade">Criatividade</a></li>
+            <li><a href="#etica">Ética</a></li>
+            <li><a href="#futuro">Futuro</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>A Revolução da Inteligência Artificial</h1>
+            <p>Explorando os horizontes da criatividade, ética e o futuro digital que estamos construindo juntos</p>
+            <a href="#criatividade" class="cta-button">Explorar a Revolução</a>
+        </div>
+    </section>
+
+    <!-- Criatividade Section -->
+    <section id="criatividade">
+        <div class="container">
+            <h2 class="section-title fade-in">Criatividade Amplificada</h2>
+            <p class="section-subtitle fade-in">A IA está redefinindo os limites da criação humana</p>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Arte Generativa</h3>
+                    <p>Algoritmos que criam obras de arte únicas, colaborando com artistas para expandir as fronteiras da expressão visual.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">✍️</div>
+                    <h3>Escrita Criativa</h3>
+                    <p>Sistemas de linguagem que auxiliam escritores, gerando ideias, refinando narrativas e explorando novos estilos literários.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Composição Musical</h3>
+                    <p>IAs que compõem melodias originais, harmonizam sons e criam experiências sonoras inéditas em diversos gêneros.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎬</div>
+                    <h3>Produção Audiovisual</h3>
+                    <p>Ferramentas que editam vídeos, geram efeitos especiais e democratizam a criação de conteúdo cinematográfico.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏗️</div>
+                    <h3>Design & Arquitetura</h3>
+                    <p>Sistemas que otimizam projetos arquitetônicos, criam designs inovadores e visualizam espaços antes da construção.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Desenvolvimento de Jogos</h3>
+                    <p>IAs que criam mundos procedurais, geram narrativas dinâmicas e personalizam experiências de jogo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ética Section -->
+    <section id="etica">
+        <div class="container">
+            <h2 class="section-title fade-in">Ética e Responsabilidade</h2>
+            <p class="section-subtitle fade-in">Construindo uma IA que respeita valores humanos fundamentais</p>
+            
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Transparência</h3>
+                        <p>Sistemas de IA devem ser compreensíveis, permitindo que usuários entendam como decisões são tomadas e resultados são gerados.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Privacidade</h3>
+                        <p>Proteção rigorosa de dados pessoais, garantindo que informações sensíveis sejam tratadas com o máximo cuidado e segurança.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Equidade</h3>
+                        <p>Combate ativo a vieses algorítmicos, assegurando que a IA sirva todos igualmente, sem discriminação ou preconceito.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Responsabilidade</h3>
+                        <p>Estabelecimento de frameworks claros de accountability, onde desenvolvedores e empresas respondem pelo impacto de suas tecnologias.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3>Sustentabilidade</h3>
+                        <p>Desenvolvimento consciente que considera o impacto ambiental, buscando eficiência energética e práticas ecológicas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Futuro Section -->
+    <section id="futuro">
+        <div class="container">
+            <h2 class="section-title fade-in">O Futuro Digital</h2>
+            <p class="section-subtitle fade-in">Tendências e transformações que moldarão nossa sociedade</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <span class="stat-number">15.7T</span>
+                    <span class="stat-label">Impacto econômico global até 2030</span>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <span class="stat-number">97M</span>
+                    <span class="stat-label">Novos empregos criados pela IA</span>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <span class="stat-number">45%</span>
+                    <span class="stat-label">Aumento de produtividade previsto</span>
+                </div>
+                
+                <div class="stat-card fade-in">
+                    <span class="stat-number">85%</span>
+                    <span class="stat-label">Das empresas adotarão IA até 2025</span>
+                </div>
+            </div>
+
+            <div class="features-grid" style="margin-top: 4rem;">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🏥</div>
+                    <h3>Saúde Personalizada</h3>
+                    <p>Diagnósticos precisos, tratamentos customizados e descoberta acelerada de medicamentos através de IA médica avançada.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Sustentabilidade Global</h3>
+                    <p>Otimização de recursos, previsão climática aprimorada e soluções inovadoras para desafios ambientais críticos.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Educação Adaptativa</h3>
+                    <p>Aprendizado personalizado que se adapta ao ritmo de cada estudante, democratizando o acesso ao conhecimento de qualidade.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🚗</div>
+                    <h3>Mobilidade Inteligente</h3>
+                    <p>Veículos autônomos, cidades inteligentes e sistemas de transporte otimizados que reduzem acidentes e emissões.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Pesquisa Científica</h3>
+                    <p>Aceleração de descobertas em física, química e biologia através de simulações e análises de dados em larga escala.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Colaboração Humano-IA</h3>
+                    <p>Parcerias simbióticas onde humanos e máquinas combinam suas forças únicas para resolver problemas complexos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Revolução IA. Construindo o futuro com responsabilidade e inovação.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation for stats
+        const animateCounter = (element, target, duration = 2000) => {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const updateCounter = () => {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start).toLocaleString('pt-BR');
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    // Format final number
+                    if (target >= 1000000000000) {
+                        element.textContent = (target / 1000000000000).toFixed(1) + 'T';
+                    } else if (target >= 1000000) {
+                        element.textContent = (target / 1000000).toFixed(0) + 'M';
+                    } else {
+                        element.textContent = target + '%';
+                    }
+                }
+            };
+            
+            updateCounter();
+        };
+
+        // Animate stats when they come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    const text = statNumber.textContent;
+                    
+                    let targetValue;
+                    if (text.includes('T')) {
+                        targetValue = parseFloat(text) * 1000000000000;
+                    } else if (text.includes('M')) {
+                        targetValue = parseFloat(text) * 1000000;
+                    } else {
+                        targetValue = parseFloat(text);
+                    }
+                    
+                    animateCounter(statNumber, targetValue);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statsObserver.observe(card);
+        });
+
+        // Parallax effect for gradient orbs
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.gradient-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
